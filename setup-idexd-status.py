@@ -13,7 +13,7 @@ wait_before_restart = 0
 rpc = ""
 download_latest = False
 
-print("\n--- aurad-status setup\n")
+print("\n--- idexd-status setup\n")
 
 inp = input("Do you want to restart your node automatically when it goes offline? [Y/N]: ")
 
@@ -27,11 +27,11 @@ if inp == "Y" or inp == "y":
 		exit()
 	else:
 		wait_before_restart = int(inp)
-		
+
 		if wait_before_restart < 60:
 			print("Timeout before restart must be at least 60 seconds. Exiting.")
 			exit()
-			
+
 
 		rpc = input("Enter the RPC you want to use (for example \"https://mainnet.infura.io/v3/<API KEY>\"). Leave empty for default: ")
 
@@ -61,14 +61,11 @@ if inp == "Y" or inp == "y":
 	jobj["download_latest"] = download_latest
 
 	try:
-		with open('aurad-status-settings.json', 'w') as f:
+		with open('idexd-status-settings.json', 'w') as f:
   			json.dump(jobj, f)
 	except:
   		print("Could not write settings to disk. Please make sure you have write permissions in this directory.")
 
-	print("\nSettings saved. You can now run ./aurad-status.py")
+	print("\nSettings saved. You can now run ./idexd-status.py")
 else:
 	print("\nAborted. No settings were changed.")
-
-
-

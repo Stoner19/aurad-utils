@@ -1,19 +1,19 @@
 #!/bin/bash
 
 if [ "$EUID" -ne 0 ]
-  then echo "Please run this script as root: sudo ./install-aurad.sh"
+  then echo "Please run this script as root: sudo ./install-idexd.sh"
   exit
 fi
 
 clear
 
-echo "This program will automatically install aurad on your system."
+echo "This program will automatically install idexd on your system."
 echo ""
-echo "This program is for INSTALLING aurad. Do not use it for upgrading to a new version."
+echo "This program is for INSTALLING idexd. Do not use it for upgrading to a new version."
 echo ""
 echo "Tested on Ubuntu 18.04. Might not work on other OSes."
 echo ""
-echo "To install aurad, it is required to create a non-root user."
+echo "To install idexd, it is required to create a non-root user."
 echo "Please enter a username and password for the new user."
 echo "If you have already created a new user, just enter the existing credentials."
 echo ""
@@ -30,7 +30,7 @@ read new_user_name
 echo -e "\n"
 
 if [ "$new_user_name" = "" ]; then
-	
+
 	echo "Please fill in a username."
 	exit
 fi
@@ -61,7 +61,7 @@ if [ $? -ne 0 ]; then
 		echo "Could not set password for new user. Please contact tech support. Beep boop."
 		exit
 	fi
-else 
+else
 	echo "User exists already."
 
 	if getent group sudo | grep &>/dev/null "\b${new_user_name}\b"; then
@@ -76,7 +76,7 @@ else
 		fi
 	fi
 fi
- 
+
 echo ""
 echo "Installation begins now"
 echo ""
@@ -94,12 +94,12 @@ ufw allow 8443/tcp
 echo y | ufw enable
 
 
-# Running as new user 
+# Running as new user
 
 su $new_user_name -c "curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash"
 su $new_user_name -c 'cd ~; NVM_DIR="$HOME/.nvm"; [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"; nvm install 10.15; npm install -g @idexio/idexd-cli'
 
 echo ""
 echo "Set and done! Please logout (close the terminal) and login again to finish the installation."
-echo "Then you can now run 'aura config' to setup your node. Happy staking!"
+echo "Then you can now run 'idex config' to setup your node. Happy staking!"
 echo ""

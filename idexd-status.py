@@ -47,14 +47,14 @@ def read_config():
 	global config_rpc;
 
 	try:
-		with open('aurad-status-settings.json', 'r') as f:
+		with open('idexd-status-settings.json', 'r') as f:
 			jobj = json.loads(f.read())
 
 			config_auto_restart = jobj["auto_restart"]
 			config_wait_before_restart = jobj["wait_before_restart"]
 			config_download_latest = jobj["download_latest"]
 			config_rpc = jobj["rpc"]
-			
+
 			if config_auto_restart == True and config_wait_before_restart < 60:
 				print("Timeout before restart must be at least 60 seconds. Using default settings with auto-restart disabled.")
 				config_auto_restart = False
@@ -121,11 +121,11 @@ def read_logs():
 					current_block_num = extract_integers(line)[0]
 		else:
 			break
-			
+
 	# Check that the container has not died and is not stuck
 	if last_line_current_run == last_line:
 		is_online = False
-	
+
 	last_line = last_line_current_run
 
 	if online + offline == 0:
@@ -135,9 +135,9 @@ def read_logs():
 
 	percentage_downtime = 100 - float(percentage_uptime)
 
-	auraProc = subprocess.Popen(['idex','status'],stdout=subprocess.PIPE)
+	idexProc = subprocess.Popen(['idex','status'],stdout=subprocess.PIPE)
 
-	version_line = auraProc.stdout.readline().decode("utf-8")
+	version_line = idexProc.stdout.readline().decode("utf-8")
 	if version_line != '':
 		version = version_line.split()[1]
 
@@ -196,7 +196,7 @@ def check_for_restart():
 		offline_seconds = 0
 		was_online_once = False
 		container_died = False
-		
+
 		print("Stopping...")
 		subprocess.Popen(['idex','stop']).wait()
 
@@ -275,7 +275,7 @@ while True:
 
 	last_run = current_time
 
-	
+
 	print(script_version)
 	print("")
 	print("Your version: " + version + " | Latest version: " + latest_version + " | " + version_status)
@@ -285,4 +285,3 @@ while True:
 	print("Restarts: " + str(restarts) + "\n")
 	print("Current block: " + str(current_block_num) + "\n")
 	wait()
-
